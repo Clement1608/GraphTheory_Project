@@ -1,0 +1,265 @@
+========================================================================
+Graph 1
+File: graph1.txt
+Vertices: 4
+Edges: 5
+Arc list:
+  0 -> 1 (weight = 1)
+  0 -> 2 (weight = 5)
+  1 -> 2 (weight = 3)
+  1 -> 3 (weight = 5)
+  2 -> 3 (weight = 2)
+
+Path request: 0 -> 3
+Distance: 6
+Path: 0 -> 1 -> 3
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 3 via 1 = 6
+========================================================================
+Graph 1
+File: graph1.txt
+Vertices: 4
+Edges: 5
+Arc list:
+  0 -> 1 (weight = 1)
+  0 -> 2 (weight = 5)
+  1 -> 2 (weight = 3)
+  1 -> 3 (weight = 5)
+  2 -> 3 (weight = 2)
+
+Graph 1 action:
+  Switched to the L matrix view.
+
+Graph 1 action:
+  Switched to the P matrix view.
+========================================================================
+Graph 7
+File: graph7.txt
+Vertices: 7
+Edges: 12
+Arc list:
+  0 -> 1 (weight = 2)
+  0 -> 2 (weight = -5)
+  1 -> 1 (weight = 3)
+  1 -> 2 (weight = -3)
+  1 -> 3 (weight = 3)
+  2 -> 0 (weight = 7)
+  2 -> 1 (weight = 4)
+  2 -> 3 (weight = 3)
+  3 -> 2 (weight = 2)
+  4 -> 5 (weight = 5)
+  5 -> 4 (weight = 2)
+  5 -> 6 (weight = -2)
+
+Graph 7 action:
+  Moved vertex 1 to (422, 178).
+
+Graph 7 action:
+  Moved vertex 1 to (473, 28).
+
+Graph 7 action:
+  Moved vertex 3 to (59, 43).
+
+Graph 7 action:
+  Moved vertex 0 to (184, 75).
+
+Graph 7 action:
+  Moved vertex 2 to (378, 434).
+
+Graph 7 action:
+  Moved vertex 0 to (297, 148).
+
+Graph 7 action:
+  Moved vertex 1 to (579, 76).
+
+Graph 7 action:
+  Moved vertex 0 to (340, 105).
+
+Graph 7 action:
+  Moved vertex 5 to (803, 246).
+
+Graph 7 action:
+  Moved vertex 6 to (717, 138).
+
+Graph 7 action:
+  Moved vertex 4 to (652, 322).
+
+Graph 7 action:
+  Moved vertex 6 to (620, 173).
+========================================================================
+Graph 1
+File: graph1.txt
+Vertices: 4
+Edges: 5
+Arc list:
+  0 -> 1 (weight = 1)
+  0 -> 2 (weight = 5)
+  1 -> 2 (weight = 3)
+  1 -> 3 (weight = 5)
+  2 -> 3 (weight = 2)
+========================================================================
+Graph 7
+File: graph7.txt
+Vertices: 7
+Edges: 12
+Arc list:
+  0 -> 1 (weight = 2)
+  0 -> 2 (weight = -5)
+  1 -> 1 (weight = 3)
+  1 -> 2 (weight = -3)
+  1 -> 3 (weight = 3)
+  2 -> 0 (weight = 7)
+  2 -> 1 (weight = 4)
+  2 -> 3 (weight = 3)
+  3 -> 2 (weight = 2)
+  4 -> 5 (weight = 5)
+  5 -> 4 (weight = 2)
+  5 -> 6 (weight = -2)
+
+Graph 7 action:
+  Moved vertex 1 to (561, 153).
+
+Graph 7 action:
+  Moved vertex 0 to (384, 464).
+
+Graph 7 action:
+  Moved vertex 3 to (161, 60).
+
+Graph 7 action:
+  Moved vertex 4 to (691, 391).
+
+Graph 7 action:
+  Moved vertex 5 to (527, 466).
+
+Graph 7 action:
+  Moved vertex 6 to (692, 303).
+
+Graph 7 action:
+  Moved vertex 2 to (235, 281).
+
+Graph 7 action:
+  Moved vertex 4 to (681, 444).
+
+Graph 7 action:
+  Moved vertex 4 to (786, 299).
+
+Graph 7 action:
+  Moved vertex 6 to (645, 89).
+
+Graph 7 action:
+  Moved vertex 6 to (828, 249).
+
+Graph 7 action:
+  Moved vertex 4 to (778, 134).
+
+Graph 7 action:
+  Moved vertex 5 to (645, 352).
+========================================================================
+Graph 1
+File: graph1.txt
+Vertices: 4
+Edges: 5
+Arc list:
+  0 -> 1 (weight = 1)
+  0 -> 2 (weight = 5)
+  1 -> 2 (weight = 3)
+  1 -> 3 (weight = 5)
+  2 -> 3 (weight = 2)
+
+Graph 1 action:
+  Moved vertex 3 to (289, 150).
+
+Graph 1 action:
+  Moved vertex 0 to (305, 359).
+
+Graph 1 action:
+  Moved vertex 2 to (341, 267).
+
+Graph 1 action:
+  Moved vertex 1 to (863, 303).
+
+Graph 1 action:
+  Moved vertex 1 to (863, 303).
+
+Graph 1 action:
+  Moved vertex 1 to (863, 303).
+
+Graph 1 action:
+  Moved vertex 2 to (341, 267).
+
+Graph 1 action:
+  Moved vertex 3 to (289, 150).
+========================================================================
+Graph 1
+File: graph1.txt
+Vertices: 4
+Edges: 5
+Arc list:
+  0 -> 1 (weight = 1)
+  0 -> 2 (weight = 5)
+  1 -> 2 (weight = 3)
+  1 -> 3 (weight = 5)
+  2 -> 3 (weight = 2)
+
+Graph 1 action:
+  Moved vertex 3 to (219, 150).
+
+Graph 1 action:
+  Moved vertex 0 to (414, 276).
+
+Graph 1 action:
+  Moved vertex 0 to (297, 295).
+
+Graph 1 action:
+  Moved vertex 2 to (521, 95).
+
+Graph 1 action:
+  Moved vertex 1 to (613, 356).
+
+Graph 1 action:
+  Moved vertex 2 to (453, 110).
+
+Graph 1 action:
+  Moved vertex 2 to (629, 92).
+========================================================================
+Graph 1
+File: graph1.txt
+Vertices: 4
+Edges: 5
+Arc list:
+  0 -> 1 (weight = 1)
+  0 -> 2 (weight = 5)
+  1 -> 2 (weight = 3)
+  1 -> 3 (weight = 5)
+  2 -> 3 (weight = 2)
+
+Graph 1 action:
+  Moved vertex 3 to (225, 80).
+
+Graph 1 action:
+  Moved vertex 0 to (218, 437).
+
+Graph 1 action:
+  Moved vertex 2 to (760, 357).
+========================================================================
+Graph 7
+File: graph7.txt
+Vertices: 7
+Edges: 12
+Arc list:
+  0 -> 1 (weight = 2)
+  0 -> 2 (weight = -5)
+  1 -> 1 (weight = 3)
+  1 -> 2 (weight = -3)
+  1 -> 3 (weight = 3)
+  2 -> 0 (weight = 7)
+  2 -> 1 (weight = 4)
+  2 -> 3 (weight = 3)
+  3 -> 2 (weight = 2)
+  4 -> 5 (weight = 5)
+  5 -> 4 (weight = 2)
+  5 -> 6 (weight = -2)
+
+Graph 7 action:
+  Moved vertex 1 to (475, 182).
