@@ -3,7 +3,13 @@ from __future__ import annotations
 from flask import Flask, jsonify, render_template, request
 from werkzeug.exceptions import NotFound
 
-from generate_traces import append_trace_entry, build_action_trace, build_graph_overview, build_path_trace
+from generate_traces import (
+    append_trace_entry,
+    build_action_trace,
+    build_graph_overview,
+    build_path_trace,
+    build_step_trace,
+)
 from graph_utils import extract_graph_number, graph_payload, list_graphs
 
 
@@ -60,8 +66,7 @@ def append_trace():
             entry = build_action_trace(graph_name, f"Switched to the {matrix_type} matrix view.")
         elif action == "step_change":
             step = int(payload["step"])
-            label = str(payload["label"])
-            entry = build_action_trace(graph_name, f"Moved to step {step}: {label}")
+            entry = build_step_trace(graph_name, step)
         elif action == "move_node":
             node_id = int(payload["nodeId"])
             x = int(payload["x"])

@@ -105,6 +105,34 @@ def build_action_trace(graph_name: str, description: str) -> str:
     )
 
 
+def build_step_trace(graph_name: str, step_index: int) -> str:
+    graph = read_graph(graph_name)
+    _distances, _predecessors, _next_node, steps = floyd_warshall_with_steps(graph.vertex_count, graph.edges)
+
+    if step_index < 0 or step_index >= len(steps):
+        raise ValueError("Invalid Floyd-Warshall step index.")
+
+    step = steps[step_index]
+    lines = [
+        step["label"],
+        format_matrix("L matrix", step["distanceMatrix"]),
+        format_matrix("P matrix", step["predecessorMatrix"]),
+    ]
+
+    updates = step["updates"]
+    if updates:
+        lines.append("Updates:")
+        lines.extend(
+            f"  {update['from']} -> {update['to']} via {update['via']} = {update['new_distance']}"
+            for update in updates
+        )
+    else:
+        lines.append("Updates: none")
+
+    lines.append("")
+    return "\n".join(lines)
+
+
 def append_trace_entry(entry: str) -> None:
     needs_separator = OUTPUT_PATH.exists() and OUTPUT_PATH.read_text(encoding="utf-8").strip()
     prefix = "\n" if needs_separator and not entry.startswith("=" * 72) else ""
