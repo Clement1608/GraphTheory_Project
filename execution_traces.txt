@@ -1,0 +1,342 @@
+========================================================================
+Graph 1
+File: graph1.txt
+Vertices: 4
+Edges: 5
+Arc list:
+  0 -> 1 (weight = 1)
+  0 -> 2 (weight = 5)
+  1 -> 2 (weight = 3)
+  1 -> 3 (weight = 5)
+  2 -> 3 (weight = 2)
+
+Using vertex 0 as an intermediate
+L matrix
+          0    1    2    3
+0         0    1    5  inf
+1       inf    0    3    5
+2       inf  inf    0    2
+3       inf  inf  inf    0
+P matrix
+          0    1    2    3
+0         -    0    0    -
+1         -    -    1    1
+2         -    -    -    2
+3         -    -    -    -
+Updates: none
+
+Using vertex 1 as an intermediate
+L matrix
+          0    1    2    3
+0         0    1    4    6
+1       inf    0    3    5
+2       inf  inf    0    2
+3       inf  inf  inf    0
+P matrix
+          0    1    2    3
+0         -    0    1    1
+1         -    -    1    1
+2         -    -    -    2
+3         -    -    -    -
+Updates:
+  0 -> 2 via 1 = 4
+  0 -> 3 via 1 = 6
+
+Using vertex 2 as an intermediate
+L matrix
+          0    1    2    3
+0         0    1    4    6
+1       inf    0    3    5
+2       inf  inf    0    2
+3       inf  inf  inf    0
+P matrix
+          0    1    2    3
+0         -    0    1    1
+1         -    -    1    1
+2         -    -    -    2
+3         -    -    -    -
+Updates: none
+
+Using vertex 3 as an intermediate
+L matrix
+          0    1    2    3
+0         0    1    4    6
+1       inf    0    3    5
+2       inf  inf    0    2
+3       inf  inf  inf    0
+P matrix
+          0    1    2    3
+0         -    0    1    1
+1         -    -    1    1
+2         -    -    -    2
+3         -    -    -    -
+Updates: none
+
+Graph 1 action:
+  Switched to the P matrix view.
+========================================================================
+Graph 1
+File: graph1.txt
+Vertices: 4
+Edges: 5
+Arc list:
+  0 -> 1 (weight = 1)
+  0 -> 2 (weight = 5)
+  1 -> 2 (weight = 3)
+  1 -> 3 (weight = 5)
+  2 -> 3 (weight = 2)
+
+Path request: 0 -> 3
+Distance: 6
+Path: 0 -> 1 -> 3
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 3 via 1 = 6
+
+Path request: 0 -> 3
+Distance: 6
+Path: 0 -> 1 -> 3
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 3 via 1 = 6
+
+Path request: 0 -> 3
+Distance: 6
+Path: 0 -> 1 -> 3
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 3 via 1 = 6
+
+Path request: 0 -> 3
+Distance: 6
+Path: 0 -> 1 -> 3
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 3 via 1 = 6
+
+Path request: 0 -> 3
+Distance: 6
+Path: 0 -> 1 -> 3
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 3 via 1 = 6
+
+Path request: 0 -> 3
+Distance: 6
+Path: 0 -> 1 -> 3
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 3 via 1 = 6
+
+Path request: 0 -> 3
+Distance: 6
+Path: 0 -> 1 -> 3
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 3 via 1 = 6
+========================================================================
+Graph 1
+File: graph1.txt
+Vertices: 4
+Edges: 5
+Arc list:
+  0 -> 1 (weight = 1)
+  0 -> 2 (weight = 5)
+  1 -> 2 (weight = 3)
+  1 -> 3 (weight = 5)
+  2 -> 3 (weight = 2)
+
+Path request: 0 -> 3
+Distance: 6
+Path: 0 -> 1 -> 3
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 3 via 1 = 6
+
+Graph 1 action:
+  Moved vertex 0 to (171, 127).
+
+Graph 1 action:
+  Moved vertex 3 to (544, 67).
+
+Graph 1 action:
+  Moved vertex 1 to (664, 226).
+
+Graph 1 action:
+  Moved vertex 2 to (316, 336).
+
+Graph 1 action:
+  Moved vertex 2 to (344, 337).
+
+Graph 1 action:
+  Reset the graph layout to its default positions.
+========================================================================
+Graph 1
+File: graph1.txt
+Vertices: 4
+Edges: 5
+Arc list:
+  0 -> 1 (weight = 1)
+  0 -> 2 (weight = 5)
+  1 -> 2 (weight = 3)
+  1 -> 3 (weight = 5)
+  2 -> 3 (weight = 2)
+========================================================================
+Graph 5
+File: graph5.txt
+Vertices: 4
+Edges: 8
+Arc list:
+  0 -> 1 (weight = 1)
+  0 -> 2 (weight = -5)
+  1 -> 2 (weight = -3)
+  1 -> 3 (weight = 2)
+  2 -> 1 (weight = 4)
+  2 -> 3 (weight = 2)
+  2 -> 0 (weight = 6)
+  3 -> 2 (weight = 2)
+
+Path request: 0 -> 3
+Distance: -3
+Path: 0 -> 2 -> 3
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 3 via 1 = 3
+  Step 3: Using vertex 2 as an intermediate
+    0 -> 3 via 2 = -3
+
+Path request: 0 -> 3
+Distance: -3
+Path: 0 -> 2 -> 3
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 3 via 1 = 3
+  Step 3: Using vertex 2 as an intermediate
+    0 -> 3 via 2 = -3
+
+Path request: 0 -> 3
+Distance: -3
+Path: 0 -> 2 -> 3
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 3 via 1 = 3
+  Step 3: Using vertex 2 as an intermediate
+    0 -> 3 via 2 = -3
+
+Path request: 0 -> 3
+Distance: -3
+Path: 0 -> 2 -> 3
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 3 via 1 = 3
+  Step 3: Using vertex 2 as an intermediate
+    0 -> 3 via 2 = -3
+========================================================================
+Graph 1
+File: graph1.txt
+Vertices: 4
+Edges: 5
+Arc list:
+  0 -> 1 (weight = 1)
+  0 -> 2 (weight = 5)
+  1 -> 2 (weight = 3)
+  1 -> 3 (weight = 5)
+  2 -> 3 (weight = 2)
+
+Path request: 0 -> 3
+Distance: 6
+Path: 0 -> 1 -> 3
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 3 via 1 = 6
+
+Path request: 0 -> 3
+Distance: 6
+Path: 0 -> 1 -> 3
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 3 via 1 = 6
+========================================================================
+Graph 1
+File: graph1.txt
+Vertices: 4
+Edges: 5
+Arc list:
+  0 -> 1 (weight = 1)
+  0 -> 2 (weight = 5)
+  1 -> 2 (weight = 3)
+  1 -> 3 (weight = 5)
+  2 -> 3 (weight = 2)
+========================================================================
+Graph 8
+File: graph8.txt
+Vertices: 5
+Edges: 7
+Arc list:
+  0 -> 1 (weight = 1)
+  0 -> 2 (weight = 2)
+  0 -> 3 (weight = 1)
+  1 -> 4 (weight = 3)
+  2 -> 4 (weight = 1)
+  2 -> 3 (weight = 1)
+  3 -> 4 (weight = 4)
+
+Path request: 0 -> 4
+Distance: 3
+Path: 0 -> 2 -> 4
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 4 via 1 = 4
+  Step 3: Using vertex 2 as an intermediate
+    0 -> 4 via 2 = 3
+
+Path request: 0 -> 4
+Distance: 3
+Path: 0 -> 2 -> 4
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 4 via 1 = 4
+  Step 3: Using vertex 2 as an intermediate
+    0 -> 4 via 2 = 3
+========================================================================
+Graph 1
+File: graph1.txt
+Vertices: 4
+Edges: 5
+Arc list:
+  0 -> 1 (weight = 1)
+  0 -> 2 (weight = 5)
+  1 -> 2 (weight = 3)
+  1 -> 3 (weight = 5)
+  2 -> 3 (weight = 2)
+========================================================================
+Graph 8
+File: graph8.txt
+Vertices: 5
+Edges: 7
+Arc list:
+  0 -> 1 (weight = 1)
+  0 -> 2 (weight = 2)
+  0 -> 3 (weight = 1)
+  1 -> 4 (weight = 3)
+  2 -> 4 (weight = 1)
+  2 -> 3 (weight = 1)
+  3 -> 4 (weight = 4)
+
+Path request: 0 -> 4
+Distance: 3
+Path: 0 -> 2 -> 4
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 4 via 1 = 4
+  Step 3: Using vertex 2 as an intermediate
+    0 -> 4 via 2 = 3
+
+Path request: 0 -> 4
+Distance: 3
+Path: 0 -> 2 -> 4
+Relevant Floyd-Warshall updates:
+  Step 2: Using vertex 1 as an intermediate
+    0 -> 4 via 1 = 4
+  Step 3: Using vertex 2 as an intermediate
+    0 -> 4 via 2 = 3

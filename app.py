@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from flask import Flask, jsonify, render_template, request
+from pathlib import Path
+
+from flask import Flask, jsonify, render_template, request, send_file
 from werkzeug.exceptions import NotFound
 
 from generate_traces import (
@@ -14,6 +16,7 @@ from graph_utils import extract_graph_number, graph_payload, list_graphs
 
 
 app = Flask(__name__)
+TRACE_FILE = Path(__file__).resolve().parent / "execution_traces.txt"
 
 
 @app.get("/")
@@ -83,6 +86,13 @@ def append_trace():
 
     append_trace_entry(entry)
     return jsonify({"status": "ok"})
+
+
+@app.get("/api/trace/download")
+def download_trace():
+    if not TRACE_FILE.exists():
+        raise NotFound("execution_traces.txt was not found.")
+    return send_file(TRACE_FILE, as_attachment=True, download_name="execution_traces.txt")
 
 
 @app.errorhandler(NotFound)

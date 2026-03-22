@@ -17,7 +17,6 @@ const distanceMatrixButton = document.querySelector("#distance-matrix-button");
 const predecessorMatrixButton = document.querySelector("#predecessor-matrix-button");
 const resetLayoutButton = document.querySelector("#reset-layout-button");
 const downloadTraceButton = document.querySelector("#download-trace-button");
-const traceLog = document.querySelector("#trace-log");
 const svg = d3.select("#graph-canvas");
 
 let currentGraph = null;
@@ -29,10 +28,11 @@ let currentSimulation = null;
 let currentNodes = [];
 let defaultNodePositions = new Map();
 let layoutDirty = false;
-let interactionHistory = [];
 
 const width = 900;
 const height = 540;
+const EDGE_COLOR = "#4b5563";
+const HIGHLIGHT_COLOR = "#0ea5e9";
 
 async function fetchGraph(graphName) {
   const response = await fetch(`/api/graphs/${encodeURIComponent(graphName)}`);
@@ -98,51 +98,8 @@ function renderMatrix(matrix) {
   matrixContainer.replaceChildren(table);
 }
 
-function nowStamp() {
-  return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-}
-
-function renderTrace() {
-  if (!traceLog) {
-    return;
-  }
-
-  if (interactionHistory.length === 0) {
-    traceLog.innerHTML = '<p class="trace-empty">No actions recorded yet.</p>';
-    return;
-  }
-
-  traceLog.innerHTML = interactionHistory
-    .map((entry) => `<p class="trace-entry"><span class="trace-time">${entry.time}</span>${entry.message}</p>`)
-    .join("");
-}
-
-function logInteraction(message, options = {}) {
-  const { reset = false } = options;
-  const entry = { time: nowStamp(), message };
-
-  interactionHistory = reset ? [entry] : [...interactionHistory, entry];
-  renderTrace();
-}
-
 function downloadTrace() {
-  const lines = [
-    "Graph Theory Project - Session Trace",
-    `Generated: ${new Date().toLocaleString()}`,
-    "",
-    ...interactionHistory.map((entry) => `[${entry.time}] ${entry.message}`),
-  ];
-  const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement("a");
-  const graphName = currentGraph?.name ? currentGraph.name.replace(".txt", "") : "session";
-
-  anchor.href = url;
-  anchor.download = `${graphName}-session-trace.txt`;
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  URL.revokeObjectURL(url);
+  window.location.href = "/api/trace/download";
 }
 
 function setActiveMatrix(matrixType) {
@@ -152,12 +109,11 @@ function setActiveMatrix(matrixType) {
   matrixTitle.textContent = matrixType === "distance" ? "Current L matrix" : "Current P matrix";
 
   if (currentGraph) {
-    logInteraction(`Switched to the ${matrixType === "distance" ? "L" : "P"} matrix view.`);
     appendTrace("matrix_view", {
       graphName: currentGraph.name,
       matrixType: matrixType === "distance" ? "L" : "P",
     }).catch((error) => {
-      logInteraction(error.message);
+      console.error(error.message);
     });
     renderStep(activeStep);
   }
@@ -337,11 +293,12 @@ function updateHighlights(path = []) {
   }
 
   svg.selectAll(".edge-path")
-    .attr("stroke", (d) => (highlightedLinks.has(d.id) ? "#f25f5c" : "#4b5563"))
-    .attr("stroke-width", (d) => (highlightedLinks.has(d.id) ? 4 : 2.2));
+    .style("stroke", (d) => (highlightedLinks.has(d.id) ? HIGHLIGHT_COLOR : EDGE_COLOR))
+    .attr("stroke-width", (d) => (highlightedLinks.has(d.id) ? 4 : 2.2))
+    .attr("marker-end", (d) => (highlightedLinks.has(d.id) ? "url(#arrowhead-highlight)" : "url(#arrowhead-default)"));
 
   svg.selectAll(".node-circle")
-    .attr("fill", (d) => (highlightedNodes.has(d.id) ? "#f25f5c" : "#1f2937"))
+    .style("fill", (d) => (highlightedNodes.has(d.id) ? HIGHLIGHT_COLOR : "#1f2937"))
     .attr("r", (d) => (highlightedNodes.has(d.id) ? 20 : 16));
 }
 
@@ -361,17 +318,22 @@ function renderGraph(data) {
   setLayoutDirty(false);
 
   const defs = svg.append("defs");
-  defs.append("marker")
-    .attr("id", "arrowhead")
-    .attr("viewBox", "0 -5 10 10")
-    .attr("refX", 28)
-    .attr("refY", 0)
-    .attr("markerWidth", 8)
-    .attr("markerHeight", 8)
-    .attr("orient", "auto")
-    .append("path")
-    .attr("d", "M0,-5L10,0L0,5")
-    .attr("fill", "#4b5563");
+  [
+    { id: "arrowhead-default", color: EDGE_COLOR },
+    { id: "arrowhead-highlight", color: HIGHLIGHT_COLOR },
+  ].forEach((markerDef) => {
+    defs.append("marker")
+      .attr("id", markerDef.id)
+      .attr("viewBox", "0 -5 10 10")
+      .attr("refX", 28)
+      .attr("refY", 0)
+      .attr("markerWidth", 8)
+      .attr("markerHeight", 8)
+      .attr("orient", "auto")
+      .append("path")
+      .attr("d", "M0,-5L10,0L0,5")
+      .attr("fill", markerDef.color);
+  });
 
   const componentCenters = buildComponentLayout(data);
   const nodes = data.nodes.map((node) => {
@@ -407,7 +369,7 @@ function renderGraph(data) {
     .data(links)
     .join("path")
     .attr("class", "edge-path")
-    .attr("marker-end", "url(#arrowhead)");
+    .attr("marker-end", "url(#arrowhead-default)");
 
   const edgeLabel = labelLayer.selectAll("g")
     .data(links)
@@ -516,14 +478,13 @@ function dragEnded(simulation) {
     event.subject.fx = clamp(event.subject.x, 28, width - 28);
     event.subject.fy = clamp(event.subject.y, 28, height - 28);
     setLayoutDirty(true);
-    logInteraction(`Moved vertex ${event.subject.id} to (${Math.round(event.subject.fx)}, ${Math.round(event.subject.fy)}).`);
     appendTrace("move_node", {
       graphName: currentGraph.name,
       nodeId: event.subject.id,
       x: Math.round(event.subject.fx),
       y: Math.round(event.subject.fy),
     }).catch((error) => {
-      logInteraction(error.message);
+      console.error(error.message);
     });
   };
 }
@@ -547,11 +508,10 @@ function resetLayout() {
 
   setLayoutDirty(false);
   currentSimulation.alpha(0.9).restart();
-  logInteraction("Reset the graph layout to its default positions.");
   appendTrace("reset_layout", {
     graphName: currentGraph.name,
   }).catch((error) => {
-    logInteraction(error.message);
+    console.error(error.message);
   });
 }
 
@@ -581,14 +541,12 @@ function showPath() {
   if (start === end) {
     pathResult.textContent = "Choose two different vertices.";
     updateHighlights([]);
-    logInteraction(`Path query ignored because start and end were both ${start}.`);
     return;
   }
 
   if (currentGraph.floydWarshall.hasAbsorbingCircuit) {
     pathResult.textContent = "Shortest paths are not displayed because the graph contains an absorbing circuit.";
     updateHighlights([]);
-    logInteraction("Path query blocked because the graph contains an absorbing circuit.");
     return;
   }
 
@@ -596,19 +554,17 @@ function showPath() {
   if (!result) {
     pathResult.textContent = `No path found from ${start} to ${end}.`;
     updateHighlights([]);
-    logInteraction(`No path found from ${start} to ${end}.`);
     return;
   }
 
   pathResult.textContent = `Distance ${result.distance} | Path ${result.path.join(" → ")}`;
   updateHighlights(result.path);
-  logInteraction(`Displayed shortest path ${start} -> ${end}: distance ${result.distance}, path ${result.path.join(" -> ")}.`);
   appendTrace("highlight_path", {
     graphName: currentGraph.name,
     start: Number(start),
     end: Number(end),
   }).catch((error) => {
-    logInteraction(error.message);
+    console.error(error.message);
   });
 }
 
@@ -635,12 +591,8 @@ async function loadGraph(graphName) {
   pathResult.textContent = currentGraph.floydWarshall.hasAbsorbingCircuit
     ? "Shortest-path queries are disabled for graphs with an absorbing circuit."
     : "Select two vertices to highlight their shortest path.";
-  logInteraction(
-    `Loaded ${currentGraph.graphNumber === null ? currentGraph.name : `graph ${currentGraph.graphNumber}`} with ${currentGraph.vertexCount} vertices and ${currentGraph.edgeCount} edges.`,
-    { reset: true },
-  );
   appendTrace("load_graph", { graphName: currentGraph.name }).catch((error) => {
-    logInteraction(error.message);
+    console.error(error.message);
   });
 }
 
@@ -652,13 +604,12 @@ stepRange?.addEventListener("input", (event) => {
   const step = Number(event.target.value);
   const stepData = currentGraph?.floydWarshall.steps[step];
   if (stepData) {
-    logInteraction(`Moved to step ${step}: ${stepData.label}.`);
     appendTrace("step_change", {
       graphName: currentGraph.name,
       step,
       label: stepData.label,
     }).catch((error) => {
-      logInteraction(error.message);
+      console.error(error.message);
     });
   }
   renderStep(event.target.value);
@@ -682,7 +633,6 @@ resetLayoutButton?.addEventListener("click", () => {
 
 downloadTraceButton?.addEventListener("click", () => {
   downloadTrace();
-  logInteraction("Downloaded the session trace.");
 });
 
 const initialGraph = document.body.dataset.initialGraph;
@@ -693,4 +643,3 @@ if (initialGraph) {
 } else {
   stepLabel.textContent = "No graph files were found in the Graphs directory.";
 }
-renderTrace();

@@ -1,113 +1,113 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Graph Theory Visualizer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-  </head>
-  <body data-initial-graph="{{ initial_graph or '' }}">
-    <main class="page-shell">
-      <section class="hero">
-        <p class="eyebrow">Graph Theory Project</p>
-        <h1>Floyd-Warshall in motion</h1>
-        <p class="hero-copy">
-          Load one of the project graphs, inspect the adjacency matrix at each iteration,
-          and highlight the shortest path directly on the network.
-        </p>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Graph Theory Visualizer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body data-initial-graph="{{ initial_graph or '' }}">
+  <main class="page-shell">
+    <section class="hero">
+      <p class="eyebrow">Graph Theory Project</p>
+      <h1>Floyd-Warshall in motion</h1>
+      <p class="hero-copy">
+        Load one of the project graphs, inspect the adjacency matrix at each iteration,
+        and highlight the shortest path directly on the network.
+      </p>
+    </section>
+
+    <section class="workspace">
+      <aside class="controls-panel">
+        <div class="panel-card">
+          <label for="graph-select">Graph file</label>
+          <select id="graph-select">
+            {% for graph in graphs %}
+            <option value="{{ graph.name }}" {% if graph.name==initial_graph %}selected{% endif %}>{{ graph.label }}
+            </option>
+            {% endfor %}
+          </select>
+          <p id="graph-number" class="panel-copy subtle"></p>
+        </div>
+
+        <div class="panel-card">
+          <p class="panel-title">Step explorer</p>
+          <label for="step-range">Intermediate vertex</label>
+          <input id="step-range" type="range" min="0" max="0" value="0">
+          <p id="step-label" class="panel-copy">Load a graph to inspect the algorithm.</p>
+          <p id="step-updates" class="panel-copy subtle"></p>
+        </div>
+
+        <div class="panel-card">
+          <p class="panel-title">Circuit status</p>
+          <p id="circuit-status" class="panel-copy subtle"></p>
+        </div>
+
+        <div class="panel-card">
+          <p class="panel-title">Shortest path</p>
+          <div class="path-grid">
+            <div>
+              <label for="start-node">Start</label>
+              <select id="start-node"></select>
+            </div>
+            <div>
+              <label for="end-node">End</label>
+              <select id="end-node"></select>
+            </div>
+          </div>
+          <button id="path-button" type="button">Highlight path</button>
+          <p id="path-result" class="panel-copy subtle"></p>
+        </div>
+
+        <div class="panel-card stats-card">
+          <p class="stat"><span id="vertex-count">0</span><span>Vertices</span></p>
+          <p class="stat"><span id="edge-count">0</span><span>Edges</span></p>
+        </div>
+
+        <div class="panel-card">
+          <p class="panel-title">Execution Trace</p>
+          <button id="download-trace-button" class="secondary-button" type="button">Download</button>
+        </div>
+      </aside>
+
+      <section class="content-panel">
+        <div class="visual-card">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">D3 Graph View</p>
+              <h2 id="graph-title">Graph</h2>
+            </div>
+            <button id="reset-layout-button" class="secondary-button is-hidden" type="button">Reset layout</button>
+          </div>
+          <svg id="graph-canvas" viewBox="0 0 900 540" aria-label="Graph visualization"></svg>
+        </div>
+
+        <div class="visual-card">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Algorithm Matrices</p>
+              <h2 id="matrix-title">Current distances</h2>
+            </div>
+            <div class="matrix-toggle" role="group" aria-label="Matrix type selector">
+              <button id="distance-matrix-button" class="matrix-toggle-button is-active" type="button">L matrix</button>
+              <button id="predecessor-matrix-button" class="matrix-toggle-button" type="button">P matrix</button>
+            </div>
+          </div>
+          <div id="matrix-container" class="matrix-container"></div>
+        </div>
       </section>
+    </section>
+  </main>
 
-      <section class="workspace">
-        <aside class="controls-panel">
-          <div class="panel-card">
-            <label for="graph-select">Graph file</label>
-            <select id="graph-select">
-              {% for graph in graphs %}
-              <option value="{{ graph.name }}" {% if graph.name == initial_graph %}selected{% endif %}>{{ graph.label }}</option>
-              {% endfor %}
-            </select>
-            <p id="graph-number" class="panel-copy subtle"></p>
-          </div>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
 
-          <div class="panel-card">
-            <p class="panel-title">Step explorer</p>
-            <label for="step-range">Intermediate vertex</label>
-            <input id="step-range" type="range" min="0" max="0" value="0">
-            <p id="step-label" class="panel-copy">Load a graph to inspect the algorithm.</p>
-            <p id="step-updates" class="panel-copy subtle"></p>
-          </div>
-
-          <div class="panel-card">
-            <p class="panel-title">Circuit status</p>
-            <p id="circuit-status" class="panel-copy subtle"></p>
-          </div>
-
-          <div class="panel-card">
-            <p class="panel-title">Shortest path</p>
-            <div class="path-grid">
-              <div>
-                <label for="start-node">Start</label>
-                <select id="start-node"></select>
-              </div>
-              <div>
-                <label for="end-node">End</label>
-                <select id="end-node"></select>
-              </div>
-            </div>
-            <button id="path-button" type="button">Highlight path</button>
-            <p id="path-result" class="panel-copy subtle"></p>
-          </div>
-
-          <div class="panel-card stats-card">
-            <p class="stat"><span id="vertex-count">0</span><span>Vertices</span></p>
-            <p class="stat"><span id="edge-count">0</span><span>Edges</span></p>
-          </div>
-
-          <div class="panel-card">
-            <div class="card-header">
-              <div>
-                <p class="panel-title">Session Trace</p>
-                <p class="panel-copy subtle">History of actions performed in the app.</p>
-              </div>
-              <button id="download-trace-button" class="secondary-button" type="button">Download trace</button>
-            </div>
-            <div id="trace-log" class="trace-log"></div>
-          </div>
-        </aside>
-
-        <section class="content-panel">
-          <div class="visual-card">
-            <div class="card-header">
-              <div>
-                <p class="eyebrow">D3 Graph View</p>
-                <h2 id="graph-title">Graph</h2>
-              </div>
-              <button id="reset-layout-button" class="secondary-button is-hidden" type="button">Reset layout</button>
-            </div>
-            <svg id="graph-canvas" viewBox="0 0 900 540" aria-label="Graph visualization"></svg>
-          </div>
-
-          <div class="visual-card">
-            <div class="card-header">
-              <div>
-                <p class="eyebrow">Algorithm Matrices</p>
-                <h2 id="matrix-title">Current distances</h2>
-              </div>
-              <div class="matrix-toggle" role="group" aria-label="Matrix type selector">
-                <button id="distance-matrix-button" class="matrix-toggle-button is-active" type="button">L matrix</button>
-                <button id="predecessor-matrix-button" class="matrix-toggle-button" type="button">P matrix</button>
-              </div>
-            </div>
-            <div id="matrix-container" class="matrix-container"></div>
-          </div>
-        </section>
-      </section>
-    </main>
-
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="{{ url_for('static', filename='app.js') }}"></script>
-  </body>
 </html>
