@@ -78,14 +78,15 @@
       </aside>
 
       <section class="content-panel">
-        <div class="visual-card">
+        <div id="graph-visual-card" class="visual-card">
           <div class="card-header">
-            <div>
+            <div id="graph-card-header-copy">
               <p class="eyebrow">D3 Graph View</p>
               <h2 id="graph-title">Graph</h2>
             </div>
             <button id="reset-layout-button" class="secondary-button is-hidden" type="button">Reset layout</button>
           </div>
+          <div id="graph-size-message" class="graph-size-message is-hidden"></div>
           <svg id="graph-canvas" viewBox="0 0 900 540" aria-label="Graph visualization"></svg>
         </div>
 

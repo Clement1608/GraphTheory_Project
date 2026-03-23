@@ -17,6 +17,9 @@ const distanceMatrixButton = document.querySelector("#distance-matrix-button");
 const predecessorMatrixButton = document.querySelector("#predecessor-matrix-button");
 const resetLayoutButton = document.querySelector("#reset-layout-button");
 const downloadTraceButton = document.querySelector("#download-trace-button");
+const graphSizeMessage = document.querySelector("#graph-size-message");
+const graphVisualCard = document.querySelector("#graph-visual-card");
+const graphCardHeaderCopy = document.querySelector("#graph-card-header-copy");
 const svg = d3.select("#graph-canvas");
 
 let currentGraph = null;
@@ -31,6 +34,7 @@ let layoutDirty = false;
 
 const width = 900;
 const height = 540;
+const MAX_GRAPH_VERTICES = 50;
 const EDGE_COLOR = "#4b5563";
 const HIGHLIGHT_COLOR = "#0ea5e9";
 
@@ -307,6 +311,19 @@ function setLayoutDirty(isDirty) {
   resetLayoutButton?.classList.toggle("is-hidden", !isDirty);
 }
 
+function setGraphDisplayState(shouldShowGraph, message = "") {
+  graphVisualCard?.classList.toggle("graph-card-message-mode", !shouldShowGraph);
+  graphCardHeaderCopy?.classList.toggle("is-hidden", !shouldShowGraph);
+  svg.classed("is-hidden", !shouldShowGraph);
+  graphSizeMessage?.classList.toggle("is-hidden", shouldShowGraph);
+  if (graphSizeMessage) {
+    graphSizeMessage.textContent = message;
+  }
+  if (!shouldShowGraph) {
+    setLayoutDirty(false);
+  }
+}
+
 function captureDefaultPositions(nodes) {
   defaultNodePositions = new Map(
     nodes.map((node) => [node.id, { x: node.x, y: node.y }]),
@@ -314,6 +331,16 @@ function captureDefaultPositions(nodes) {
 }
 
 function renderGraph(data) {
+  if (data.vertexCount > MAX_GRAPH_VERTICES) {
+    svg.selectAll("*").remove();
+    currentSimulation = null;
+    currentNodes = [];
+    defaultNodePositions = new Map();
+    setGraphDisplayState(false, "The graph is too large to be displayed on this computer.");
+    return;
+  }
+
+  setGraphDisplayState(true);
   svg.selectAll("*").remove();
   setLayoutDirty(false);
 
